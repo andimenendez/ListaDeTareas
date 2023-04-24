@@ -7,7 +7,9 @@ import EditarTarea from './editarTarea';
 const ListadoTareas = ({listadoState,setListadoState}) => {
     const [editar,setEditar] = useState(0);
     
+    
     useEffect (()=>{
+
         
         conseguirListado();
 
@@ -44,7 +46,11 @@ const ListadoTareas = ({listadoState,setListadoState}) => {
                     return(
                         <article key={tarea.id} className='w-100 d-flex flex-column justify-content-center align-items-center'>
                             <div className='d-flex justify-content-between align-items-center w-100 border-bottom shadow mb-2 p-2'>
-                                <input type="checkbox" checked={tarea.completada} onChange={()=>{tareaCompleta(tarea.id)}} />
+                                <input type="checkbox" checked={tarea.completada} 
+                                onChange={()=>{
+                                tareaCompleta(tarea.id);
+                                }} 
+                                />
                                 <p className={`m-0 ${tarea.completada ? styles.tachado : null}`}>
                                     {tarea.titulo}
                                 </p>
@@ -75,45 +81,7 @@ const ListadoTareas = ({listadoState,setListadoState}) => {
                 </h2>
     }
 </>
-        // <>
-        //     {
-        //     listadoState !=null ?
-        //                 listadoState.map(tarea => {
-        //                     const tareaCompleta = estadoTareas[tarea.id] || false;
-        //                     return(
-        //                         <article key={tarea.id} className='w-100 d-flex flex-column justify-content-center align-items-center'>
-        //                             <div className='d-flex justify-content-between align-items-center w-100 border-bottom shadow mb-2 p-2'>
-        //                                 <p className='m-0'>
-        //                                     {tarea.titulo}
-        //                                 </p>
-        //                                 <div>
-        //                                     <button className={styles.button} onClick={()=>setEditar(tarea.id)}>
-        //                                         <ImPencil2/>
-        //                                     </button>
-        //                                     <button onClick={()=>{BorrarTarea(tarea.id)}}className={styles.button}>
-        //                                         <ImBin/>
-        //                                     </button> 
-        //                                 </div>
-        //                             </div>
-                                    
-        //                                     {editar === tarea.id &&(<EditarTarea tarea={tarea} conseguirListado={conseguirListado}
-        //                                     setEditar={setEditar}
-        //                                     setListadoState={setListadoState}
-        //                                     />)}
-
-                                    
-                                                                   
-                                    
-        //                         </article>
-        //                     );  
-        //                 })
-        //             : 
-        //                 <h2>
-        //                     No hay tareas para realizar
-        //                 </h2>
-        //     }
-        // </>
-    );
+);
 };
 
 export default ListadoTareas;

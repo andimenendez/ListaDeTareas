@@ -18,7 +18,7 @@ const editarTarea = ({tarea,conseguirListado,setEditar,setListadoState}) => {
 
     localStorage.setItem('tarea',JSON.stringify(tareasEnLista));
 
-    SetListadoState(tareasEnLista);
+    setListadoState(tareasEnLista);
     setEditar(0);
     
    }
