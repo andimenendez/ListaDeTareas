@@ -8,8 +8,7 @@ const ListadoTareas = ({listadoState,setListadoState}) => {
     const [editar,setEditar] = useState(0);
     
     useEffect (()=>{
-
-        console.log("componente de listado de tareas cargado");
+        
         conseguirListado();
 
     },[])
@@ -25,51 +24,95 @@ const ListadoTareas = ({listadoState,setListadoState}) => {
         let listaDeTareas = conseguirListado();
 
         let nuevoArrayTareas = listaDeTareas.filter(tarea => tarea.id !== parseInt(id))
-        console.log(listaDeTareas,nuevoArrayTareas);
-
         setListadoState(nuevoArrayTareas);
 
         localStorage.setItem('tarea',JSON.stringify(nuevoArrayTareas));
     };
+    const tareaCompleta = (id) =>{
+        const newArray = conseguirListado();
+        let tarea = newArray.find((completo)=> completo.id === id);
+        tarea.completada = !tarea.completada;
+        localStorage.setItem('tarea',JSON.stringify(newArray));
+        setListadoState(newArray);
+    }
 
   return (
-        <>
-            {
-            listadoState !=null ?
-                        listadoState.map(tarea => {
-                            return(
-                                <article key={tarea.id} className='w-100 d-flex flex-column justify-content-center align-items-center'>
-                                    <div className='d-flex justify-content-between align-items-center w-100 border-bottom shadow mb-2 p-2'>
-                                        <p className='m-0'>
-                                            {tarea.titulo}
-                                        </p>
-                                        <div>
-                                            <button className={styles.button} onClick={()=>setEditar(tarea.id)}>
-                                                <ImPencil2/>
-                                            </button>
-                                            <button onClick={()=>{BorrarTarea(tarea.id)}}className={styles.button}>
-                                                <ImBin/>
-                                            </button> 
-                                        </div>
-                                    </div>
+    <>
+    {
+    listadoState !=null ?
+                listadoState.map(tarea => {
+                    return(
+                        <article key={tarea.id} className='w-100 d-flex flex-column justify-content-center align-items-center'>
+                            <div className='d-flex justify-content-between align-items-center w-100 border-bottom shadow mb-2 p-2'>
+                                <input type="checkbox" checked={tarea.completada} onChange={()=>{tareaCompleta(tarea.id)}} />
+                                <p className={`m-0 ${tarea.completada ? styles.tachado : null}`}>
+                                    {tarea.titulo}
+                                </p>
+                                <div>
+                                    <button className={styles.button} onClick={()=>setEditar(tarea.id)}>
+                                        <ImPencil2/>
+                                    </button>
+                                    <button onClick={()=>{BorrarTarea(tarea.id)}}className={styles.button}>
+                                        <ImBin/>
+                                    </button> 
+                                </div>
+                            </div>
+                            
+                                    {editar === tarea.id &&(<EditarTarea tarea={tarea} conseguirListado={conseguirListado}
+                                    setEditar={setEditar}
+                                    setListadoState={setListadoState}
+                                    />)}
+
+                            
+                                                           
+                            
+                        </article>
+                    );  
+                })
+            : 
+                <h2>
+                    No hay tareas para realizar
+                </h2>
+    }
+</>
+        // <>
+        //     {
+        //     listadoState !=null ?
+        //                 listadoState.map(tarea => {
+        //                     const tareaCompleta = estadoTareas[tarea.id] || false;
+        //                     return(
+        //                         <article key={tarea.id} className='w-100 d-flex flex-column justify-content-center align-items-center'>
+        //                             <div className='d-flex justify-content-between align-items-center w-100 border-bottom shadow mb-2 p-2'>
+        //                                 <p className='m-0'>
+        //                                     {tarea.titulo}
+        //                                 </p>
+        //                                 <div>
+        //                                     <button className={styles.button} onClick={()=>setEditar(tarea.id)}>
+        //                                         <ImPencil2/>
+        //                                     </button>
+        //                                     <button onClick={()=>{BorrarTarea(tarea.id)}}className={styles.button}>
+        //                                         <ImBin/>
+        //                                     </button> 
+        //                                 </div>
+        //                             </div>
                                     
-                                            {editar === tarea.id &&(<EditarTarea tarea={tarea} conseguirListado={conseguirListado}
-                                            setEditar={setEditar}
-                                            setListadoState={setListadoState}
-                                            />)}
+        //                                     {editar === tarea.id &&(<EditarTarea tarea={tarea} conseguirListado={conseguirListado}
+        //                                     setEditar={setEditar}
+        //                                     setListadoState={setListadoState}
+        //                                     />)}
 
                                     
                                                                    
                                     
-                                </article>
-                            );  
-                        })
-                    : 
-                        <h2>
-                            No hay tareas para realizar
-                        </h2>
-            }
-        </>
+        //                         </article>
+        //                     );  
+        //                 })
+        //             : 
+        //                 <h2>
+        //                     No hay tareas para realizar
+        //                 </h2>
+        //     }
+        // </>
     );
 };
 
